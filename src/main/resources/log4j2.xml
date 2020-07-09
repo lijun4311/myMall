@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF" monitorInterval="30">
+    <Properties>
+        <Property name="logFilePath">/log/mymall</Property>
+        <Property name="logFileAll">all</Property>
+        <Property name="logFileError">error</Property>
+        <Property name="logFileInfo">info</Property>
+        <Property name="logFileWarn">warn</Property>
+        <Property name="logFileDebug">debug</Property>
+    </Properties>
+    <appenders>
+        <console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+        </console>
+        <File name="log" fileName="${logFilePath}/${logFileAll}.log"
+              append="false">
+            <PatternLayout charset="UTF-8" pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+        <RollingFile name="RollingFileInfo" fileName="${logFilePath}/${logFileInfo}.log"
+                     filePattern="${logFilePath}/${logFileInfo}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="NEUTRAL" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout charset="UTF-8" pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+        <RollingFile name="RollingFileWarn" fileName="${logFilePath}/${logFileWarn}.log"
+                     filePattern="${logFilePath}/${logFileWarn}/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="WARN" onMatch="NEUTRAL" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout charset="UTF-8" pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+        <RollingFile name="RollingFileDebug" fileName="${logFilePath}/${logFileDebug}.log"
+                     filePattern="${logFilePath}/${logFileDebug}/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="info" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout charset="UTF-8" pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+        <RollingFile name="RollingFileError" fileName="${logFilePath}/${logFileError}.log"
+                     filePattern="${logFilePath}/${logFileError}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8" pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.mybatis" level="WARN"/>
+        <root level="info">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="log"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileDebug"/>
+            <appender-ref ref="RollingFileError"/>
+        </root>
+        <AsyncLogger name="AsyncLogger" level="info" includeLocation="true" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="log"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileDebug"/>
+            <appender-ref ref="RollingFileError"/>
+        </AsyncLogger>
+    </loggers>
+</configuration>

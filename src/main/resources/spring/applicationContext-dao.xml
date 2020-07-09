@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd">
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!--设置对象排序值-->
+        <property name="order" value="2"/>
+        <!--忽略无法解析的占位符-->
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <!--引入配置文件集合-->
+        <property name="locations">
+            <list>
+                <value>classpath:properties/datasource.properties</value>
+            </list>
+        </property>
+        <!--        配置文件编码-->
+        <property name="fileEncoding" value="utf-8"/>
+    </bean>
+    <!--  数据源 -->
+    <bean id="dataSource" class="com.mall.config.MyBasicDataSource">
+        <property name="driverClassName" value="${DRIVER}">
+        </property>
+        <property name="url" value="${URL}"/>
+        <property name="username" value="${USERNAME}"/>
+        <property name="password" value="${PASSWORD}"/>
+        <property name="initialSize" value="${INITIAL_SIZE}"/>
+        <property name="maxTotal" value="${MAX_TOTAL}"/>
+        <property name="maxIdle" value="${MAX_IDLE}"/>
+        <property name="minIdle" value="${MIN_IDLE}"/>
+        <property name="maxWaitMillis" value="${MAX_WAIT_MILLIS}"/>
+        <property name="defaultAutoCommit" value="${DEFAULT_AUTOCOMMIT}"/>
+        <property name="removeAbandonedOnBorrow" value="${REMOVE_ABANDONED_ON_BORROW}"/>
+        <property name="removeAbandonedTimeout" value="${REMOVE_ABANDONED_TIMEOUt}"/>
+        <property name="minEvictableIdleTimeMillis" value="${MIN_EVICTABLE_IDLE_TIME_MILLIS}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="${TIME_BETWEEN_EVICTION_RUNS_MILLIS}"/>
+        <property name="testWhileIdle" value="${TEST_WHILE_IDLE}"/>
+        <property name="validationQuery" value="${VALIDATION_QUERY}"/>
+    </bean>
+    <!-- 配置DAO -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.mall.mapper"/>
+
+    </bean>
+
+    <!--myBatisPlus 全局配置文件-->
+    <bean id="mybatisFillHandler" class="com.mall.config.MybatisFillHandler"/>
+    <bean id="globalConfig" class="com.baomidou.mybatisplus.core.config.GlobalConfig">
+        <property name="MetaObjectHandler" ref="mybatisFillHandler"/> <!--  非必须  -->
+    </bean>
+
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath:com/mall/mapper/xml/*.xml"/>
+    <!--myBatisPlus 全局配置文件-->
+        <property name="globalConfig" ref="globalConfig"/>
+<!--        分页插件-->
+        <property name="plugins">
+            <array>
+                <bean class="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor">
+                    <property name="dialectType" value="mysql" />
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+
+
+    <!--    配置事务-->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 通知 -->
+    <tx:advice id="txAdvice">
+        <tx:attributes>
+            <!-- 传播行为 -->
+            <tx:method name="save*"/>
+            <tx:method name="insert*"/>
+            <tx:method name="add*"/>
+            <tx:method name="create*"/>
+            <tx:method name="delete*"/>
+            <tx:method name="update*"/>
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="select*" propagation="SUPPORTS" read-only="true"/>
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <!-- 切面 -->
+    <aop:config>
+        <aop:pointcut id="myPoint" expression="execution(* com.mall.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="myPoint"/>
+    </aop:config>
+    <!--使用注解驱动-->
+    <tx:annotation-driven/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+</beans>
