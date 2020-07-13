@@ -16,10 +16,12 @@ import com.mall.vo.out.OrderVo;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,7 +40,10 @@ public class OrderManageController extends BaseController {
     @RequestMapping("list")
     @ResponseBody
     public Rest<MyPageVo> orderList(MyPageIn myPageIn) {
-        Page<Order> pageData = orderService.getPage(myPageIn);
+        Page<Order> pageData = orderService.getPage(myPageIn, null, Order.class);
+        if (CollectionUtils.isEmpty(pageData.getRecords())) {
+            return Rest.okData(MyPageVo.getEmpty(myPageIn));
+        }
         List<OrderVo> orderVo = orderService.assembleOrderVoList(pageData.getRecords(), 0);
         return Rest.okData(MyPageVo.getInstance(orderVo, pageData));
     }
@@ -47,20 +52,6 @@ public class OrderManageController extends BaseController {
     @ResponseBody
     public Rest<OrderVo> orderDetail(Long orderNo) {
         return Rest.okData(orderService.getOrderDetail(orderNo));
-    }
-
-
-    @RequestMapping("search")
-    @ResponseBody
-    public Rest<OrderVo> orderSearch(MyPageIn in,Long orderNo) {
-        Order order = orderService.getOrder(orderNo);
-        if (order != null) {
-            List<OrderItem> orderItemList = orderItemService.getOrderItem(orderNo);
-            OrderVo orderVo = orderService.assembleOrderVo(order, orderItemList);
-            return Rest.okData(orderVo);
-
-        }
-        return Rest.errorMsg("未找到订单");
     }
 
 

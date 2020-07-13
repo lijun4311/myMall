@@ -87,7 +87,7 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
         productDetailVo.setStock(product.getStock());
         productDetailVo.setImageHost(FtpConsts.HTTP_PREFIX);
         Category category = Optional.ofNullable(product.getCategoryId()).map(categoryId -> categoryMapper.selectById(categoryId)).orElse(null);
-        productDetailVo.setParentCategoryId(Optional.ofNullable(category).map(BaseEntity::getId).orElse(0));
+        productDetailVo.setParentCategoryId(Optional.ofNullable(category).map(Category::getParentId).orElse(0));
         productDetailVo.setCreateTime(MyDateUtil.dateToStr(product.getCreateTime()));
         productDetailVo.setUpdateTime(MyDateUtil.dateToStr(product.getUpdateTime()));
         return productDetailVo;

@@ -29,10 +29,12 @@ import com.mall.vo.out.OrderItemVo;
 import com.mall.vo.out.OrderProductVo;
 import com.mall.vo.out.OrderVo;
 import com.mall.vo.out.ShippingVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -312,6 +314,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
     @ArgsNotEmpty
     @Override
     public OrderVo assembleOrderVo(Order order, List<OrderItem> orderItemList) {
+
         OrderVo orderVo = new OrderVo();
         orderVo.setOrderNo(order.getOrderNo());
         orderVo.setPayment(order.getPayment());
@@ -538,7 +541,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
     @ArgsNotEmpty
     @Override
     public Order getOrder(Long orderNo) {
-        return this.getOne(this.lambdaQuery().eq(Order::getOrderNo, orderNo));
+        return this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getOrderNo, orderNo));
     }
 
     @Override

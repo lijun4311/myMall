@@ -2,6 +2,7 @@ package com.mall.util.mybatisplus;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mall.common.consts.propertiesconsts.SystemConsts;
+import com.mall.entity.BaseEntity;
 import com.mall.util.MyBeanUtil;
 import com.mall.util.MyStringUtil;
 import com.mall.vo.in.MyPageIn;
@@ -10,8 +11,8 @@ import com.mall.vo.in.MyPageIn;
  * @author lijun
  * @date 2020-06-30 15:54
  * @description 自定义mp查询对象
- * @since version-1.0
  * @error
+ * @since version-1.0
  */
 public class MyQueryWrapper {
     /**
@@ -36,6 +37,7 @@ public class MyQueryWrapper {
         queryWrapper.orderBy(MyBeanUtil.isFieldExist(pageIn.getOrderBy(), tClass),
                 pageIn.getIsAsc() == SystemConsts.ASCEND,
                 MyStringUtil.camelToUnderline(pageIn.getOrderBy()));
+
         return queryWrapper;
     }
 }

@@ -43,6 +43,7 @@
         </init-param>
         <!-- load-on-startup：表示启动容器时初始化该Servlet； -->
         <load-on-startup>1</load-on-startup>
+
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>

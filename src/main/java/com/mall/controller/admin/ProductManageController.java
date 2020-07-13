@@ -1,5 +1,6 @@
 package com.mall.controller.admin;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Maps;
@@ -12,6 +13,8 @@ import com.mall.controller.BaseController;
 import com.mall.entity.Product;
 import com.mall.service.FileService;
 import com.mall.service.ProductService;
+import com.mall.util.MyBeanUtil;
+import com.mall.util.lambda.LambdaUtil;
 import com.mall.vo.in.MyPageIn;
 import com.mall.vo.out.MyPageVo;
 import com.mall.vo.out.ProductDetailVo;
@@ -52,7 +55,7 @@ public class ProductManageController extends BaseController {
                 product.setMainImage(subImageArray[0]);
             }
         }
-        return Rest.okData(productService.save(product));
+        return Rest.okData(productService.saveOrUpdate(product));
     }
 
     @RequestMapping("setSaleStatus")
@@ -73,7 +76,9 @@ public class ProductManageController extends BaseController {
     @RequestMapping(value = "list", method = RequestMethod.GET)
     @ResponseBody
     public Rest getList(MyPageIn myPageIn) {
-        Page<Product> pageData = productService.getPage(myPageIn, null, Product.class);
+        QueryWrapper queryWrapper = new QueryWrapper<Product>();
+        queryWrapper.eq(!MyBeanUtil.isRequired(myPageIn.getSearchId()) , LambdaUtil.convertToFieldName(Product::getId), myPageIn.getSearchId());
+        Page<Product> pageData = productService.getPage(myPageIn, queryWrapper, Product.class);
         return Rest.okData(MyPageVo.getInstance(pageData));
     }
 
