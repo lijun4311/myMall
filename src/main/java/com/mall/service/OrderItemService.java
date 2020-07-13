@@ -1,5 +1,6 @@
 package com.mall.service;
 
+import com.mall.common.annotation.ArgsNotEmpty;
 import com.mall.entity.OrderItem;
 
 import java.util.List;
@@ -21,4 +22,11 @@ public interface OrderItemService extends BaseService<OrderItem> {
      * @return 子订单集合
      */
     List<OrderItem> getUserOrderItem(Long orderNo, Integer id);
+
+    /**
+     * 获得子订单
+     * @param orderNo 订单号
+     * @return 集合
+     */
+    List<OrderItem> getOrderItem(Long orderNo);
 }

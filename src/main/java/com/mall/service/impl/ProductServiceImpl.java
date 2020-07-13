@@ -17,6 +17,7 @@ import com.mall.util.lambda.LambdaUtil;
 import com.mall.vo.in.MyPageIn;
 import com.mall.vo.out.ProductDetailVo;
 import com.mall.vo.out.ProductListVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,4 +92,6 @@ public class ProductServiceImpl extends BaseServiceImpl<ProductMapper, Product> 
         productDetailVo.setUpdateTime(MyDateUtil.dateToStr(product.getUpdateTime()));
         return productDetailVo;
     }
+
+
 }

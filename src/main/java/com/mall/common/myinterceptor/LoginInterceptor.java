@@ -3,6 +3,7 @@ package com.mall.common.myinterceptor;
 import com.mall.common.Rest;
 import com.mall.common.annotation.UserLogin;
 import com.mall.common.consts.UserEnum;
+import com.mall.common.consts.propertiesconsts.RedisConsts;
 import com.mall.entity.User;
 import com.mall.util.*;
 import org.springframework.stereotype.Component;
@@ -35,9 +36,13 @@ public class LoginInterceptor implements HandlerInterceptor {
                 String userJsonStr = RedisPoolUtil.get(loginToken);
                 User user = JsonUtil.string2Obj(userJsonStr, User.class);
                 if (!MyBeanUtil.isRequired(user)) {
-                    request.setAttribute(UserEnum.REQUEST_USER.getName(), user);
-                    request.setAttribute(UserEnum.REQUEST_TOKEN.getName(), loginToken);
-                    return true;
+                    if (request.getServletPath().indexOf(UserEnum.Role.ADIMN_PATH) > 0 && user.getRole() == UserEnum.Role.ROLE_ADMIN) {
+                        request.setAttribute(UserEnum.REQUEST_USER.getName(), user);
+                        request.setAttribute(UserEnum.REQUEST_TOKEN.getName(), loginToken);
+                        RedisPoolUtil.expire(loginToken, RedisConsts.REDIS_SESSION_EXTIME);
+                        return true;
+                    }
+                    return false;
                 }
             }
             response.setCharacterEncoding("UTF-8");

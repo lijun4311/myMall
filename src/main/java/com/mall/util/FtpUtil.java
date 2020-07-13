@@ -12,9 +12,9 @@ import java.util.List;
 /**
  * @author lijun
  * @date 2020-06-30 15:57
- * @description  ftp工具类
- * @since version-1.0
+ * @description ftp工具类
  * @error
+ * @since version-1.0
  */
 public class FtpUtil implements MyLogUtil {
 
@@ -27,6 +27,10 @@ public class FtpUtil implements MyLogUtil {
             log.error("连接FTP服务器异常", e);
         }
         return ftpClient;
+    }
+
+    public static boolean uploadFile(List<File> fileList) throws IOException {
+        return FtpUtil.upLoadFile("img", fileList);
     }
 
     public static boolean upLoadFile(String remotePath, List<File> fileList) throws IOException {

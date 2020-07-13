@@ -37,6 +37,8 @@ import org.springframework.util.CollectionUtils;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -308,7 +310,8 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
      * @return 订单vo
      */
     @ArgsNotEmpty
-    private OrderVo assembleOrderVo(Order order, List<OrderItem> orderItemList) {
+    @Override
+    public OrderVo assembleOrderVo(Order order, List<OrderItem> orderItemList) {
         OrderVo orderVo = new OrderVo();
         orderVo.setOrderNo(order.getOrderNo());
         orderVo.setPayment(order.getPayment());
@@ -363,7 +366,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
 
     @Override
     @ArgsNotEmpty
-    public OrderVo getOrderDetail(Integer id, Long orderNo) {
+    public OrderVo getUserOrderDetail(Integer id, Long orderNo) {
         Order order = this.getUserOrder(id, orderNo);
         if (order != null) {
             List<OrderItem> orderItemList = orderItemService.getUserOrderItem(orderNo, id);
@@ -372,13 +375,24 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
         return null;
     }
 
-
     @Override
     @ArgsNotEmpty
+    public OrderVo getOrderDetail(Long orderNo) {
+        Order order = this.getOrder(orderNo);
+        if (order != null) {
+            List<OrderItem> orderItemList = orderItemService.getOrderItem(orderNo);
+            return assembleOrderVo(order, orderItemList);
+        }
+        return null;
+    }
+
+
+    @Override
+    @ArgsNotEmpty("userId")
     public List<OrderVo> assembleOrderVoList(List<Order> orderList, Integer userId) {
         List<OrderVo> orderVoList = Lists.newArrayList();
         List<OrderItem> orderItemList = orderItemService.list(new LambdaQueryWrapper<OrderItem>()
-                .in(OrderItem::getOrderNo, orderList.stream().map(Order::getOrderNo).collect(Collectors.toSet())).eq(OrderItem::getUserId, userId));
+                .in(OrderItem::getOrderNo, orderList.stream().map(Order::getOrderNo).collect(Collectors.toSet())).eq(userId>0,OrderItem::getUserId, userId));
         Map<Long, List<OrderItem>> orederMap = new HashMap<>(10);
         orderItemList.forEach(
                 orderItem ->
@@ -506,8 +520,24 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
         return Rest.ok();
     }
 
+    @Override
     @ArgsNotEmpty
-    private Order getOrder(Long orderNo) {
+    public boolean manageSendGoods(Long orderNo) {
+        Order order = this.getOrder(orderNo);
+        if (order != null) {
+            if (order.getStatus() == OrderEnum.PAID.getCode()) {
+                order.setStatus(OrderEnum.SHIPPED.getCode());
+                order.setSendTime(LocalDateTime.now());
+                this.updateById(order);
+                return this.updateById(order);
+            }
+        }
+        return false;
+    }
+
+    @ArgsNotEmpty
+    @Override
+    public Order getOrder(Long orderNo) {
         return this.getOne(this.lambdaQuery().eq(Order::getOrderNo, orderNo));
     }
 

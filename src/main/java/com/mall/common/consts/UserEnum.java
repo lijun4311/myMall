@@ -33,6 +33,8 @@ public enum UserEnum {
         int ROLE_CUSTOMER = 0;
         //管理员
         int ROLE_ADMIN = 1;
+
+        String ADIMN_PATH="manage";
     }
 
     /**

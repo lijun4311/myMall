@@ -1,4 +1,4 @@
-package com.mall.controller.backend;
+package com.mall.controller.client;
 
 import com.google.common.collect.Maps;
 import com.mall.common.Rest;

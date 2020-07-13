@@ -48,4 +48,5 @@ public interface ProductService extends BaseService<Product> {
      */
     ProductDetailVo assembleProductDetailVo(Product product);
 
+
 }

@@ -1,4 +1,4 @@
-package com.mall.controller.backend;
+package com.mall.controller.client;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.mall.common.Rest;

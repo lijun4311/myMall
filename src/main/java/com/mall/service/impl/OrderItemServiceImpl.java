@@ -25,4 +25,10 @@ public class OrderItemServiceImpl extends BaseServiceImpl<OrderItemMapper, Order
     public List<OrderItem> getUserOrderItem(Long orderNo, Integer id) {
         return this.list(new LambdaQueryWrapper<OrderItem>().eq(OrderItem::getOrderNo, orderNo).eq(OrderItem::getUserId, id));
     }
+
+    @Override
+    @ArgsNotEmpty
+    public List<OrderItem> getOrderItem(Long orderNo) {
+        return this.list(new LambdaQueryWrapper<OrderItem>().eq(OrderItem::getOrderNo, orderNo));
+    }
 }

@@ -1,4 +1,4 @@
-package com.mall.controller.backend;
+package com.mall.controller.client;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
@@ -94,7 +94,7 @@ public class OrderController extends BaseController {
     @ResponseBody
     public Rest detail(Long orderNo) {
         User user = (User) request.getAttribute(UserEnum.REQUEST_USER.getName());
-        return Rest.okData(orderService.getOrderDetail(user.getId(), orderNo));
+        return Rest.okData(orderService.getUserOrderDetail(user.getId(), orderNo));
     }
 
     /**

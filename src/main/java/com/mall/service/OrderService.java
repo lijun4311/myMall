@@ -1,7 +1,9 @@
 package com.mall.service;
 
 import com.mall.common.Rest;
+import com.mall.common.annotation.ArgsNotEmpty;
 import com.mall.entity.Order;
+import com.mall.entity.OrderItem;
 import com.mall.vo.out.OrderProductVo;
 import com.mall.vo.out.OrderVo;
 
@@ -44,6 +46,7 @@ public interface OrderService extends BaseService<Order> {
      */
     Order getUserOrder(Integer id, Long orderNo);
 
+
     /**
      * 获得购物车中商品
      *
@@ -52,14 +55,32 @@ public interface OrderService extends BaseService<Order> {
      */
     OrderProductVo getOrderCartProduct(Integer id);
 
+
     /**
-     * 获得订单详情
+     * 封住订单数据
      *
-     * @param id
-     * @param orderNo
-     * @return
+     * @param order         订单
+     * @param orderItemList 订单集合
+     * @return 订单数据
      */
-    OrderVo getOrderDetail(Integer id, Long orderNo);
+    OrderVo assembleOrderVo(Order order, List<OrderItem> orderItemList);
+
+    /**
+     * 获得用户订单详情
+     *
+     * @param id      用户ID
+     * @param orderNo 订单号
+     * @return 订单详情
+     */
+    OrderVo getUserOrderDetail(Integer id, Long orderNo);
+
+    /**
+     * 订单号获得订单详情
+     *
+     * @param orderNo 订单号
+     * @return 订单详情
+     */
+    OrderVo getOrderDetail(Long orderNo);
 
     /**
      * 订单集合数据封装对像
@@ -72,6 +93,14 @@ public interface OrderService extends BaseService<Order> {
 
 
     /**
+     * 获得订单详情
+     *
+     * @param orderNo 订单号
+     * @return 订单
+     */
+    Order getOrder(Long orderNo);
+
+    /**
      * 订单是否支付
      *
      * @param id      用户id
@@ -82,16 +111,20 @@ public interface OrderService extends BaseService<Order> {
 
     /**
      * 支付宝支付接口
+     *
      * @param orderNo 订单号
-     * @param id Userid
+     * @param id      Userid
      * @return 支付结果集
      */
     Rest pay(Long orderNo, Integer id);
 
     /**
      * 支付宝回调接口
+     *
      * @param params 回调参数集
      * @return 回调状态
      */
     Rest aliCallback(Map<String, String> params);
+
+    boolean manageSendGoods(Long orderNo);
 }

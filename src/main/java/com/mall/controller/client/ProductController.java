@@ -1,4 +1,4 @@
-package com.mall.controller.backend;
+package com.mall.controller.client;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
