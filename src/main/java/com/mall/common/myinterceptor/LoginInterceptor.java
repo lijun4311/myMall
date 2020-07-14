@@ -38,6 +38,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 if (!MyBeanUtil.isRequired(user)) {
                     if (request.getServletPath().indexOf(UserEnum.Role.ADIMN_PATH) > 0) {
                         if (user.getRole() != UserEnum.Role.ROLE_ADMIN) {
+                            noLogin(response);
                             return false;
                         }
                     }
@@ -47,13 +48,17 @@ public class LoginInterceptor implements HandlerInterceptor {
                     return true;
                 }
             }
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/json; charset=utf-8");
-            PrintWriter out = response.getWriter();
-            out.append(JsonUtil.obj2String(Rest.noLgoin()));
-            out.close();
+            noLogin(response);
             return false;
         }
         return true;
+    }
+
+    private void noLogin(HttpServletResponse response) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json; charset=utf-8");
+        PrintWriter out = response.getWriter();
+        out.append(JsonUtil.obj2String(Rest.noLgoin()));
+        out.close();
     }
 }
