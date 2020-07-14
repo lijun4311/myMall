@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @author lijun
  * @date 2020-06-17 16:58
- * @description  用户购物地址控制器
- * @since version-1.0
+ * @description 用户购物地址控制器
  * @error
+ * @since version-1.0
  */
 @Controller
 @RequestMapping("/shipping/")
@@ -39,6 +39,7 @@ public class ShippingController extends BaseController {
     @ResponseBody
     @WebParamNotEmpty
     public Rest add(Shipping shipping) {
+        shipping.setUserId(getUser().getId());
         return Rest.isSuccess(shippingService.save(shipping));
     }
 

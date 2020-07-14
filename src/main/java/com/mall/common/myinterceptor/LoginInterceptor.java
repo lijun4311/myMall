@@ -36,13 +36,15 @@ public class LoginInterceptor implements HandlerInterceptor {
                 String userJsonStr = RedisPoolUtil.get(loginToken);
                 User user = JsonUtil.string2Obj(userJsonStr, User.class);
                 if (!MyBeanUtil.isRequired(user)) {
-                    if (request.getServletPath().indexOf(UserEnum.Role.ADIMN_PATH) > 0 && user.getRole() == UserEnum.Role.ROLE_ADMIN) {
-                        request.setAttribute(UserEnum.REQUEST_USER.getName(), user);
-                        request.setAttribute(UserEnum.REQUEST_TOKEN.getName(), loginToken);
-                        RedisPoolUtil.expire(loginToken, RedisConsts.REDIS_SESSION_EXTIME);
-                        return true;
+                    if (request.getServletPath().indexOf(UserEnum.Role.ADIMN_PATH) > 0) {
+                        if (user.getRole() != UserEnum.Role.ROLE_ADMIN) {
+                            return false;
+                        }
                     }
-                    return false;
+                    request.setAttribute(UserEnum.REQUEST_USER.getName(), user);
+                    request.setAttribute(UserEnum.REQUEST_TOKEN.getName(), loginToken);
+                    RedisPoolUtil.expire(loginToken, RedisConsts.REDIS_SESSION_EXTIME);
+                    return true;
                 }
             }
             response.setCharacterEncoding("UTF-8");

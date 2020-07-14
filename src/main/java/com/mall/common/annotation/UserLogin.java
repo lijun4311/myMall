@@ -10,7 +10,7 @@ import java.lang.annotation.*;
  * @author lijun
  * @date 2020-06-16 18:58
  * @description 用户登录 用户对象{@link User}存入 requeest 中
- * 对象获取标示 {@link UserEnum#REQUEST_USER}
+ * 对象获取标示 {@link UserEnum#REQUEST_USER} 引用方法{@link com.mall.common.myinterceptor.LoginInterceptor}
  * @error 错误返回 {@link Rest#noLgoin()}
  * @since version-1.0
  */
