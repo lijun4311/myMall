@@ -17,8 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-
+/**
+ * @author lijun
+ * @date 2020-07-14 19:39
+ * @description 管理员用户控制器
+ * @since version-1.0
+ * @error
+ */
 @Controller
 @RequestMapping("/manage/user")
 public class UserManageController extends BaseController {

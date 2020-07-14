@@ -1,33 +1,30 @@
 package com.mall.controller.admin;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.google.common.collect.Lists;
 import com.mall.common.Rest;
 import com.mall.common.annotation.UserLogin;
 import com.mall.common.annotation.WebParamNotEmpty;
 import com.mall.controller.BaseController;
 import com.mall.entity.Order;
-import com.mall.entity.OrderItem;
 import com.mall.service.OrderItemService;
 import com.mall.service.OrderService;
 import com.mall.vo.in.MyPageIn;
 import com.mall.vo.out.MyPageVo;
 import com.mall.vo.out.OrderVo;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Collection;
 import java.util.List;
-
 /**
- * Created by geely
+ * @author lijun
+ * @date 2020-07-14 19:39
+ * @description 管理员订单控制器
+ * @since version-1.0
+ * @error
  */
-
 @Controller
 @RequestMapping("/manage/order")
 @UserLogin

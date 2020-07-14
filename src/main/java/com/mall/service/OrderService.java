@@ -1,7 +1,6 @@
 package com.mall.service;
 
 import com.mall.common.Rest;
-import com.mall.common.annotation.ArgsNotEmpty;
 import com.mall.entity.Order;
 import com.mall.entity.OrderItem;
 import com.mall.vo.out.OrderProductVo;
@@ -126,5 +125,10 @@ public interface OrderService extends BaseService<Order> {
      */
     Rest aliCallback(Map<String, String> params);
 
+    /**
+     *  订单发货
+     * @param orderNo 订单号
+     * @return 是否成功
+     */
     boolean manageSendGoods(Long orderNo);
 }

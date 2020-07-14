@@ -1,11 +1,9 @@
 package com.mall.service.impl;
 
 import com.google.common.collect.Lists;
-
 import com.mall.service.FileService;
 import com.mall.util.FtpUtil;
 import com.mall.util.MyLogUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +12,11 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * Created by geely
+ * @author lijun
+ * @date 2020-07-14 19:38
+ * @description 文件上传服务
+ * @since version-1.0
+ * @error
  */
 @Service("fileService")
 public class FileServiceImpl implements FileService, MyLogUtil {

@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Created by geely
+ * @author lijun
+ * @date 2020-07-14 19:40
+ * @description 商品类别控制器
+ * @since version-1.0
+ * @error
  */
 @Controller
 @RequestMapping("/manage/category")

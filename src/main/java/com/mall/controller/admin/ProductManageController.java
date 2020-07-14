@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Maps;
 import com.mall.common.Rest;
 import com.mall.common.annotation.UserLogin;
-
 import com.mall.common.annotation.WebParamNotEmpty;
 import com.mall.common.consts.propertiesconsts.FtpConsts;
 import com.mall.controller.BaseController;
@@ -19,7 +18,6 @@ import com.mall.vo.in.MyPageIn;
 import com.mall.vo.out.MyPageVo;
 import com.mall.vo.out.ProductDetailVo;
 import org.apache.commons.lang3.StringUtils;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,14 +26,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
-
 /**
- * Created by geely
+ * @author lijun
+ * @date 2020-07-14 19:39
+ * @description 管理员商品控制器
+ * @since version-1.0
+ * @error
  */
-
 @Controller
 @RequestMapping("/manage/product")
 @UserLogin
