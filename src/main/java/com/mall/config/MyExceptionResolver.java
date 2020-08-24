@@ -29,6 +29,11 @@ import java.util.Map;
 public class MyExceptionResolver extends
         SimpleMappingExceptionResolver {
 
+
+
+
+
+
     private final static Logger log = LoggerFactory.getLogger("AsyncLogger");
 
     @Override
